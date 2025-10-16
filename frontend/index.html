@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Summarizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <div class="youtube-logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </div>
+                YouTube Video Summarizer
+            </h1>
+            <p class="subtitle">AI-powered summaries and Q&A for any video</p>
+        </header>
+
+        <!-- Video Input Section -->
+        <section class="input-section" id="inputSection">
+            <div class="input-card">
+                <h2>Enter YouTube Video URL</h2>
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="videoUrl" 
+                        placeholder="https://www.youtube.com/watch?v=..." 
+                        class="video-input"
+                    >
+                    <button id="summarizeBtn" class="btn btn-primary">
+                        <span class="btn-text">Summarize</span>
+                        <span class="loader" style="display: none;"></span>
+                    </button>
+                </div>
+                <p class="hint">Paste any YouTube video URL to get started</p>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="summary-section" id="summarySection" style="display: none;">
+            <div class="summary-card">
+                <div class="card-header">
+                    <h2>
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Video Summary
+                    </h2>
+                    <button id="newVideoBtn" class="btn btn-secondary">New Video</button>
+                </div>
+                <div class="video-info" id="videoInfo">
+                    <div class="video-thumbnail" id="videoThumbnail"></div>
+                    <div class="video-details">
+                        <p><strong>Video ID:</strong> <span id="videoId"></span></p>
+                        <p><strong>Transcript Length:</strong> <span id="transcriptLength"></span> characters</p>
+                    </div>
+                </div>
+                <div class="summary-content" id="summaryContent">
+                    <!-- Summary will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section class="chat-section" id="chatSection" style="display: none;">
+            <div class="chat-card">
+                <div class="card-header">
+                    <h2>
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Ask Questions
+                    </h2>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="message-content">
+                                <p>Hello! I've analyzed the video. Ask me anything!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="questionInput" 
+                            placeholder="Ask a question about the video..." 
+                            class="chat-input"
+                        >
+                        <button id="sendBtn" class="btn btn-primary">
+                            <span class="btn-text">Send</span>
+                            <span class="loader" style="display: none;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+
+        <footer>
+            <p>Built with FastAPI, LangChain & OpenAI</p>
+            <p class="creator">Made by <strong>Ritik Kumar Gupta</strong></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
