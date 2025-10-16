@@ -4,6 +4,11 @@ A full-stack web application that summarizes YouTube videos and provides an AI-p
 
 🌐 **Live Demo**: [Deploy on Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/ritik-gupta001/Youtube-Video-Summary-Generator)
 
+
+
+https://github.com/user-attachments/assets/07ae45a0-79af-4991-ae8c-4ca380d0354d
+
+
 ## Features
 
 - 🎥 **Video Summarization**: Extract and summarize YouTube video transcripts
