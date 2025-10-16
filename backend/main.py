@@ -184,13 +184,13 @@ def create_vector_store(transcript: str, session_id: str):
         
         llm = ChatOpenAI(
             model_name="gpt-3.5-turbo",
-            temperature=0.7,
+            temperature=0.3,  # Lower temperature for more accurate answers
             openai_api_key=os.getenv("OPENAI_API_KEY")
         )
         
         qa_chain = ConversationalRetrievalChain.from_llm(
             llm=llm,
-            retriever=vectorstore.as_retriever(search_kwargs={"k": 3}),
+            retriever=vectorstore.as_retriever(search_kwargs={"k": 5}),  # Retrieve more context
             memory=memory,
             return_source_documents=True
         )
@@ -244,39 +244,18 @@ async def summarize_video(request: VideoRequest):
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_about_video(request: ChatRequest):
-    """Answer questions about the video using RAG"""
+    """Answer questions about the video using RAG - fully context-aware"""
     try:
         if request.session_id not in video_sessions:
             raise HTTPException(status_code=404, detail="Session not found. Please summarize a video first.")
 
         session = video_sessions[request.session_id]
         qa_chain = session["qa_chain"]
-        transcript = session["transcript"]
-
-        # Simple heuristic: if question is about fundamental topics, use OpenAI general knowledge
-        fundamental_keywords = [
-            "define", "what is", "explain", "how does", "why", "history", "origin", "difference between", "compare", "advantages", "disadvantages", "pros", "cons", "example", "types of", "uses of", "applications of", "benefits", "limitations", "drawbacks"
-        ]
-        question_lower = request.question.lower()
-        is_fundamental = any(kw in question_lower for kw in fundamental_keywords)
-
-        # If question is fundamental, use OpenAI general knowledge
-        if is_fundamental:
-            client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are a knowledgeable assistant. Answer the user's question with clear, accurate, and concise information."},
-                    {"role": "user", "content": request.question}
-                ],
-                max_tokens=500,
-                temperature=0.7
-            )
-            answer = response.choices[0].message.content
-        else:
-            # Use RAG chain for video-specific Q&A
-            result = qa_chain({"question": request.question})
-            answer = result["answer"]
+        
+        # Always use RAG chain for better context-aware answers
+        # The chain has access to the full video transcript and can answer intelligently
+        result = qa_chain({"question": request.question})
+        answer = result["answer"]
 
         return ChatResponse(
             answer=answer,
