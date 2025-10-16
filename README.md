@@ -12,9 +12,11 @@ https://github.com/user-attachments/assets/07ae45a0-79af-4991-ae8c-4ca380d0354d
 ## Features
 
 - 🎥 **Video Summarization**: Extract and summarize YouTube video transcripts
-- 💬 **Hybrid AI Chat**: 
-  - Answers fundamental questions using OpenAI's general knowledge
-  - Uses RAG for video-specific questions with context-aware responses
+- 💬 **Advanced RAG Chat**: 
+  - **Context-Aware**: Always uses video transcript for accurate, relevant answers
+  - **Intelligent Retrieval**: Retrieves top 5 most relevant chunks from transcript
+  - **Conversation Memory**: Remembers chat history for follow-up questions
+  - **Precise Answers**: Lower temperature (0.3) for more accurate responses
 - 🚀 **FastAPI Backend**: High-performance Python backend
 - 🎨 **Modern UI**: Clean, responsive HTML/CSS/JavaScript frontend with light teal/yellow theme
 - 🤖 **OpenAI Integration**: Powered by GPT-3.5-turbo for intelligent responses
