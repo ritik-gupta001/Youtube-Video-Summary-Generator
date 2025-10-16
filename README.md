@@ -214,87 +214,109 @@ curl -X POST "http://localhost:8000/api/summarize" \
 
 ## Deployment
 
-### Frontend Deployment to Netlify
+### Option 1: Local Development (Recommended for Testing)
 
-#### Option 1: Deploy via Netlify UI (Recommended)
+**Best for**: Testing, development, avoiding YouTube IP blocking issues
 
-1. **Push your code to GitHub** (already done! ✅)
+#### Quick Start:
 
-2. **Go to [Netlify](https://www.netlify.com/)** and sign in with your GitHub account
-
-3. **Click "Add new site" → "Import an existing project"**
-
-4. **Connect to GitHub** and select your repository: `Youtube-Video-Summary-Generator`
-
-5. **Configure build settings:**
-   - Build command: `echo 'No build required'`
-   - Publish directory: `frontend`
-   - Click "Deploy site"
-
-6. **Your site is live!** Netlify will provide a URL like `https://your-site-name.netlify.app`
-
-#### Option 2: Deploy with Netlify CLI
-
-```bash
-# Install Netlify CLI
-npm install -g netlify-cli
-
-# Login to Netlify
-netlify login
-
-# Deploy from project root
-netlify deploy --prod --dir=frontend
-```
-
-### Backend Deployment
-
-**Important**: The backend needs to be deployed separately. Recommended platforms:
-
-1. **Railway** (Easiest for FastAPI):
-   - Connect your GitHub repo
-   - Add `OPENAI_API_KEY` as environment variable
-   - Railway will auto-detect FastAPI and deploy
-
-2. **Render**:
-   - Create new Web Service
-   - Connect GitHub repo
-   - Build command: `pip install -r backend/requirements.txt`
-   - Start command: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
-   - Add environment variable: `OPENAI_API_KEY`
-
-3. **Heroku**:
-   - Create `Procfile` in backend folder: `web: uvicorn main:app --host 0.0.0.0 --port $PORT`
-   - Deploy and set `OPENAI_API_KEY` in config vars
-
-4. **AWS/Google Cloud/Azure**: For production-grade deployment
-
-### After Backend Deployment
-
-1. Get your backend URL (e.g., `https://your-backend.railway.app`)
-
-2. Update `frontend/script.js` - change line 1:
-   ```javascript
-   const API_BASE_URL = 'https://your-backend-url.com'; // Replace with your backend URL
+1. **Start Backend:**
+   ```bash
+   cd backend
+   python main.py
    ```
 
-3. Commit and push changes:
+2. **Open Frontend:**
+   - Simply open `frontend/index.html` in your browser
+   - Or double-click the HTML file
+
+3. **You're ready!** Backend runs at `http://localhost:8000`
+
+#### Why Local?
+✅ No YouTube IP blocking (cloud providers often get blocked)  
+✅ Faster response times  
+✅ Free - no hosting costs  
+✅ Easy debugging with live logs
+
+---
+
+### Option 2: Production Deployment (Netlify + Render)
+
+**Best for**: Live demos, sharing with others, portfolio projects
+
+#### Frontend Deployment (Netlify)
+
+1. **Go to [Netlify](https://www.netlify.com/)** and sign in with GitHub
+
+2. **Click "Add new site" → "Import an existing project"**
+
+3. **Select your repository**: `Youtube-Video-Summary-Generator`
+
+4. **Configure settings:**
+   - Publish directory: `frontend`
+   - Build command: (leave empty)
+
+5. **Deploy!** Your frontend will be live at `https://your-site.netlify.app`
+
+#### Backend Deployment (Render)
+
+1. **Go to [Render](https://render.com/)** and sign in with GitHub
+
+2. **Click "New +" → "Web Service"**
+
+3. **Connect your repository**: `Youtube-Video-Summary-Generator`
+
+4. **Configure settings:**
+   - Name: `youtube-summarizer-backend`
+   - Root Directory: `backend`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+5. **Add Environment Variable:**
+   - Key: `OPENAI_API_KEY`
+   - Value: `sk-your-api-key-here`
+
+6. **Deploy!** Copy your backend URL (e.g., `https://your-app.onrender.com`)
+
+#### Connect Frontend to Backend
+
+After deploying both:
+
+1. **Update `frontend/script.js`** line 3:
+   ```javascript
+   const API_BASE_URL = 'https://your-backend.onrender.com';
+   ```
+
+2. **Commit and push:**
    ```bash
    git add frontend/script.js
    git commit -m "Update API URL for production"
    git push
    ```
 
-4. Netlify will auto-deploy the update!
+3. **Netlify auto-deploys!** Your app is now live!
+
+#### Important Notes:
+
+⚠️ **YouTube IP Blocking**: Some videos may not work on Render due to YouTube blocking cloud provider IPs. For best results, use local development.
+
+💡 **Render Free Tier**: Backend may sleep after 15 minutes of inactivity. First request will take ~30 seconds to wake up.
+
+---
 
 ### Environment Variables
 
-**Backend (.env):**
+**Backend (.env for local):**
 ```
 OPENAI_API_KEY=sk-your-actual-api-key-here
 ```
 
-**Frontend (script.js):**
-Update `API_BASE_URL` to your deployed backend URL.
+**Render (for production):**
+Add `OPENAI_API_KEY` in environment variables section
+
+**Frontend:**
+- Local: Uses `http://localhost:8000` (default)
+- Production: Update to your Render backend URL
 
 ## Security Considerations
 
