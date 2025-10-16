@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://youtube-video-summary-6w9q.onrender.com';
 
 // State management
 let currentSessionId = null;
