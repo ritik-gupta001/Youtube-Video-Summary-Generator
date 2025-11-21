@@ -2,29 +2,22 @@
 
 A full-stack web application that summarizes YouTube videos and provides an AI-powered chat interface to ask questions about the video content using RAG (Retrieval Augmented Generation).
 
-🌐 **Live Demo**: [Deploy on Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/ritik-gupta001/Youtube-Video-Summary-Generator)
-
-
-
-https://github.com/user-attachments/assets/07ae45a0-79af-4991-ae8c-4ca380d0354d
-
-
-## Features
+## ✨ Features
 
 - 🎥 **Video Summarization**: Extract and summarize YouTube video transcripts
 - 💬 **Advanced RAG Chat**: 
-  - **Context-Aware**: Always uses video transcript for accurate, relevant answers
-  - **Intelligent Retrieval**: Retrieves top 5 most relevant chunks from transcript
-  - **Conversation Memory**: Remembers chat history for follow-up questions
-  - **Precise Answers**: Lower temperature (0.3) for more accurate responses
+  - Context-aware responses using video transcript
+  - Intelligent retrieval of top 5 most relevant chunks
+  - Conversation memory for follow-up questions
+  - Precise answers with optimized temperature settings
 - 🚀 **FastAPI Backend**: High-performance Python backend
-- 🎨 **Modern UI**: Clean, responsive HTML/CSS/JavaScript frontend with light teal/yellow theme
-- 🤖 **OpenAI Integration**: Powered by GPT-3.5-turbo for intelligent responses
+- 🎨 **Modern UI**: Clean, responsive design with elegant brown theme and animated background
+- 🤖 **OpenAI Integration**: Powered by GPT-3.5-turbo
 - 📊 **Vector Search**: FAISS for efficient semantic search
 - 🔄 **Session Management**: Multiple video sessions support
 - 🌍 **Multi-language Support**: Supports transcripts in multiple languages
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Backend
 - **FastAPI**: Modern Python web framework
@@ -34,111 +27,114 @@ https://github.com/user-attachments/assets/07ae45a0-79af-4991-ae8c-4ca380d0354d
 - **youtube-transcript-api**: Extract video transcripts
 
 ### Frontend
-- **HTML5**: Structure
-- **CSS3**: Styling with modern gradients and animations
+- **HTML5/CSS3**: Modern responsive design
 - **Vanilla JavaScript**: No framework dependencies
-- **Fetch API**: REST API communication
+- **Animated UI**: Morphing shapes and smooth transitions
 
-## Installation
+## 📋 Prerequisites
 
-### Prerequisites
 - Python 3.8 or higher
-- OpenAI API key
-- Node.js (optional, for serving frontend)
+- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
+- Git
 
-### Backend Setup
+## 🚀 Quick Start
 
-1. Navigate to the backend directory:
+### 1. Clone the Repository
+```bash
+git clone https://github.com/ritik-gupta001/Youtube-Video-Summary-Generator.git
+cd Youtube-Video-Summary-Generator
+```
+
+### 2. Backend Setup
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file from example
+copy .env.example .env  # Windows
+# cp .env.example .env  # macOS/Linux
+
+# Edit .env and add your OpenAI API key
+# OPENAI_API_KEY=sk-your-actual-api-key-here
+```
+
+### 3. Run the Application
+
+**Start Backend:**
 ```bash
 cd backend
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-2. Create a virtual environment:
-```bash
-python -m venv venv
-```
-
-3. Activate the virtual environment:
-   - Windows:
-     ```bash
-     venv\Scripts\activate
-     ```
-   - macOS/Linux:
-     ```bash
-     source venv/bin/activate
-     ```
-
-4. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-5. Create a `.env` file:
-```bash
-copy .env.example .env
-```
-
-6. Edit `.env` and add your OpenAI API key:
-```
-OPENAI_API_KEY=sk-your-actual-api-key-here
-```
-
-7. Run the backend server:
-```bash
-python main.py
-```
-
-The backend will start at `http://localhost:8000`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
+**Open Frontend:**
+- Open `frontend/index.html` in your browser
+- Or serve it with Python:
 ```bash
 cd frontend
+python -m http.server 3000
 ```
 
-2. Open `index.html` in a web browser, or serve it using a simple HTTP server:
+Visit `http://localhost:3000` in your browser.
 
-Using Python:
-```bash
-python -m http.server 8080
-```
+## 💡 Usage
 
-Then open `http://localhost:8080` in your browser.
+1. **Enter YouTube URL**: Paste any YouTube video URL
+2. **Click "Summarize"**: Get an AI-generated summary
+3. **Ask Questions**: Use the chat to ask about video content
+4. **New Video**: Click "New Video" to analyze another
 
-## Usage
+## 🌐 Deployment
 
-1. **Enter YouTube URL**: Paste any YouTube video URL in the input field
-2. **Get Summary**: Click "Summarize" to generate a video summary
-3. **Ask Questions**: Use the chat interface to ask questions about the video
-4. **Start Over**: Click "New Video" to analyze a different video
+### Render (Backend)
 
-## API Endpoints
+1. Create account at [Render](https://render.com/)
+2. New Web Service → Connect GitHub repo
+3. Configure:
+   - **Root Directory**: `backend`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+4. Add environment variable: `OPENAI_API_KEY`
+5. Deploy!
 
-### POST `/api/summarize`
-Summarize a YouTube video and create a chat session.
+### Netlify (Frontend)
 
-**Request:**
+1. Create account at [Netlify](https://netlify.com/)
+2. Import project from GitHub
+3. Configure:
+   - **Publish Directory**: `frontend`
+4. Update `frontend/script.js` with your Render backend URL:
+   ```javascript
+   const API_BASE_URL = 'https://your-backend.onrender.com';
+   ```
+5. Deploy!
+
+**Note**: YouTube may block requests from some cloud IPs. Local development is recommended for best results.
+
+## 📡 API Endpoints
+
+### `POST /api/summarize`
+Summarize a YouTube video
 ```json
 {
   "video_url": "https://www.youtube.com/watch?v=VIDEO_ID"
 }
 ```
 
-**Response:**
-```json
-{
-  "summary": "Video summary text...",
-  "session_id": "session_VIDEO_ID_0",
-  "video_id": "VIDEO_ID",
-  "transcript_length": 15000
-}
-```
-
-### POST `/api/chat`
-Ask questions about the video using RAG.
-
-**Request:**
+### `POST /api/chat`
+Ask questions about the video
 ```json
 {
   "session_id": "session_VIDEO_ID_0",
@@ -146,199 +142,48 @@ Ask questions about the video using RAG.
 }
 ```
 
-**Response:**
-```json
-{
-  "answer": "The main topic is...",
-  "session_id": "session_VIDEO_ID_0"
-}
-```
+### `DELETE /api/session/{session_id}`
+Clear a session
 
-### DELETE `/api/session/{session_id}`
-Clear a session and free up resources.
+### `GET /api/health`
+Health check
 
-### GET `/api/health`
-Check API health status.
-
-## Configuration
+## ⚙️ Configuration
 
 ### Environment Variables
-
 - `OPENAI_API_KEY`: Your OpenAI API key (required)
 
-### Frontend Configuration
-
-Edit `script.js` to change the API base URL:
+### Frontend API URL
+Edit `frontend/script.js` line 3:
 ```javascript
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://localhost:8000';  // Local
+// const API_BASE_URL = 'https://your-backend.onrender.com';  // Production
 ```
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
-### Common Issues
+| Issue | Solution |
+|-------|----------|
+| "Could not fetch transcript" | Video may not have captions or is private/restricted |
+| "Summarization failed" | Check OpenAI API key and credits |
+| CORS errors | Backend CORS is enabled for all origins - check console |
+| Session not found | Sessions are in-memory; restart backend to clear |
 
-1. **"Could not fetch transcript"**
-   - Video may not have captions/subtitles
-   - Video might be private or age-restricted
-   - Try a different video
+## 🔒 Security Notes
 
-2. **"Summarization failed"**
-   - Check your OpenAI API key
-   - Ensure you have API credits
-   - Check internet connection
-
-3. **CORS errors**
-   - Backend CORS is configured for all origins
-   - If issues persist, check browser console
-
-4. **Session not found**
-   - Sessions are stored in memory
-   - Restart the backend server to clear sessions
-
-## Development
-
-### Adding New Features
-
-1. **Backend**: Add new endpoints in `main.py`
-2. **Frontend**: Add new UI components in `index.html` and logic in `script.js`
-3. **Styling**: Update `styles.css` for visual changes
-
-### Testing
-
-Test the API using curl:
-```bash
-curl -X POST "http://localhost:8000/api/summarize" \
-     -H "Content-Type: application/json" \
-     -d '{"video_url":"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}'
-```
-
-## Deployment
-
-### Option 1: Local Development (Recommended for Testing)
-
-**Best for**: Testing, development, avoiding YouTube IP blocking issues
-
-#### Quick Start:
-
-1. **Start Backend:**
-   ```bash
-   cd backend
-   python main.py
-   ```
-
-2. **Open Frontend:**
-   - Simply open `frontend/index.html` in your browser
-   - Or double-click the HTML file
-
-3. **You're ready!** Backend runs at `http://localhost:8000`
-
-#### Why Local?
-✅ No YouTube IP blocking (cloud providers often get blocked)  
-✅ Faster response times  
-✅ Free - no hosting costs  
-✅ Easy debugging with live logs
-
----
-
-### Option 2: Production Deployment (Netlify + Render)
-
-**Best for**: Live demos, sharing with others, portfolio projects
-
-#### Frontend Deployment (Netlify)
-
-1. **Go to [Netlify](https://www.netlify.com/)** and sign in with GitHub
-
-2. **Click "Add new site" → "Import an existing project"**
-
-3. **Select your repository**: `Youtube-Video-Summary-Generator`
-
-4. **Configure settings:**
-   - Publish directory: `frontend`
-   - Build command: (leave empty)
-
-5. **Deploy!** Your frontend will be live at `https://your-site.netlify.app`
-
-#### Backend Deployment (Render)
-
-1. **Go to [Render](https://render.com/)** and sign in with GitHub
-
-2. **Click "New +" → "Web Service"**
-
-3. **Connect your repository**: `Youtube-Video-Summary-Generator`
-
-4. **Configure settings:**
-   - Name: `youtube-summarizer-backend`
-   - Root Directory: `backend`
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-
-5. **Add Environment Variable:**
-   - Key: `OPENAI_API_KEY`
-   - Value: `sk-your-api-key-here`
-
-6. **Deploy!** Copy your backend URL (e.g., `https://your-app.onrender.com`)
-
-#### Connect Frontend to Backend
-
-After deploying both:
-
-1. **Update `frontend/script.js`** line 3:
-   ```javascript
-   const API_BASE_URL = 'https://your-backend.onrender.com';
-   ```
-
-2. **Commit and push:**
-   ```bash
-   git add frontend/script.js
-   git commit -m "Update API URL for production"
-   git push
-   ```
-
-3. **Netlify auto-deploys!** Your app is now live!
-
-#### Important Notes:
-
-⚠️ **YouTube IP Blocking**: Some videos may not work on Render due to YouTube blocking cloud provider IPs. For best results, use local development.
-
-💡 **Render Free Tier**: Backend may sleep after 15 minutes of inactivity. First request will take ~30 seconds to wake up.
-
----
-
-### Environment Variables
-
-**Backend (.env for local):**
-```
-OPENAI_API_KEY=sk-your-actual-api-key-here
-```
-
-**Render (for production):**
-Add `OPENAI_API_KEY` in environment variables section
-
-**Frontend:**
-- Local: Uses `http://localhost:8000` (default)
-- Production: Update to your Render backend URL
-
-## Security Considerations
-
-- Never commit `.env` file with API keys
+- Never commit `.env` files
 - Use HTTPS in production
-- Implement rate limiting
-- Add authentication for production use
-- Validate and sanitize all inputs
-- Use a proper database for session storage
-- Set up CORS properly for production domains
+- Implement rate limiting for production
+- Add authentication for public deployments
+- Validate all inputs
 
-## License
+## 📝 License
 
-MIT License - Feel free to use this project for learning and development.
+MIT License - Free to use for learning and development
 
-## Author
-
-**Ritik Kumar Gupta**
-
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - OpenAI for GPT-3.5-turbo
 - LangChain for RAG framework
-- FastAPI for the excellent web framework
+- FastAPI community
 - YouTube Transcript API developers
