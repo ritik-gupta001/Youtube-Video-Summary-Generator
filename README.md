@@ -37,7 +37,9 @@ A full-stack web application that summarizes YouTube videos and provides an AI-p
 - OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
 - Git
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Recommended)
+
+⚠️ **Important**: YouTube blocks transcript requests from cloud providers (AWS, Render, Netlify, etc.). For best results, **run the backend locally**.
 
 ### 1. Clone the Repository
 ```bash
@@ -73,21 +75,23 @@ copy .env.example .env  # Windows
 
 ### 3. Run the Application
 
-**Start Backend:**
+**Start Backend (Local - Recommended):**
 ```bash
 cd backend
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+Backend will run at `http://localhost:8000`
+
 **Open Frontend:**
-- Open `frontend/index.html` in your browser
+- Simply open `frontend/index.html` in your browser (double-click the file)
 - Or serve it with Python:
 ```bash
 cd frontend
 python -m http.server 3000
 ```
 
-Visit `http://localhost:3000` in your browser.
+Then visit `http://localhost:3000` in your browser.
 
 ## 💡 Usage
 
@@ -98,7 +102,25 @@ Visit `http://localhost:3000` in your browser.
 
 ## 🌐 Deployment
 
-### Render (Backend)
+### ⚠️ Important Note About Cloud Deployment
+
+**YouTube blocks transcript API requests from cloud providers** (Render, AWS, Google Cloud, etc.) to prevent scraping. This means:
+- ✅ **Local backend works perfectly** with all videos
+- ❌ **Cloud-deployed backends** will get IP blocked by YouTube for most videos
+
+### Option 1: Local Backend (Recommended)
+
+**Best for**: Reliable functionality, no IP blocking issues
+
+1. Keep backend running locally on your machine
+2. Deploy only the frontend to any static hosting (Netlify, Vercel, GitHub Pages)
+3. Update `frontend/script.js` to use your local IP when testing
+
+### Option 2: Full Cloud Deployment (Limited Functionality)
+
+**Note**: This will work for deployment/portfolio demonstration, but many videos will fail due to YouTube IP blocking.
+
+#### Deploy Backend to Render
 
 1. Create account at [Render](https://render.com/)
 2. New Web Service → Connect GitHub repo
@@ -164,10 +186,30 @@ const API_BASE_URL = 'http://localhost:8000';  // Local
 
 | Issue | Solution |
 |-------|----------|
-| "Could not fetch transcript" | Video may not have captions or is private/restricted |
+| "Could not retrieve transcript" with YouTube IP blocking error | **This is normal with cloud deployment**. YouTube blocks cloud IPs. Use local backend instead. |
+| "Could not fetch transcript" | Video may not have captions, is private/age-restricted, or you're using cloud-deployed backend |
 | "Summarization failed" | Check OpenAI API key and credits |
 | CORS errors | Backend CORS is enabled for all origins - check console |
 | Session not found | Sessions are in-memory; restart backend to clear |
+| Backend not responding | Check if backend is running with `uvicorn main:app --reload --host 0.0.0.0 --port 8000` |
+
+### Common Commands
+
+**Start Local Backend:**
+```bash
+cd backend
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Serve Frontend Locally:**
+```bash
+cd frontend
+python -m http.server 3000
+# Visit http://localhost:3000
+```
+
+**Or just open the file:**
+- Double-click `frontend/index.html` in File Explorer
 
 ## 🔒 Security Notes
 
