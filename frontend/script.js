@@ -1,9 +1,9 @@
 // API Configuration
 // For local development (recommended - no YouTube IP blocking):
-const API_BASE_URL = 'http://localhost:8000';
+// const API_BASE_URL = 'http://localhost:8000';
 
-// For production deployment (may have YouTube IP blocking issues):
-// const API_BASE_URL = 'https://youtube-video-summary-6w9q.onrender.com';
+// For production deployment:
+const API_BASE_URL = 'https://youtube-video-summary-rxc7.onrender.com';
 
 // State management
 let currentSessionId = null;
